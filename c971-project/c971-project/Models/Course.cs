@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace c971_project.Models
 {
@@ -8,7 +9,7 @@ namespace c971_project.Models
         InProgress,
         Complete
     }
-    public class Course : BaseViewModel
+    public class Course : BaseViewModel, INotifyPropertyChanged
     {
         public CourseStatus Status { get; set; }
         public string InstructorName { get; set; }
@@ -16,5 +17,7 @@ namespace c971_project.Models
         public string InstructorEmail { get; set; }
         public List<string> Notes { get; set; }
         public List<Assessment> Assessments { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

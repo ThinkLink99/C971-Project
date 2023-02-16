@@ -15,6 +15,8 @@ namespace c971_project
 
             //DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
+            //MainPage = new NavigationPage(new TermView());
+            //MainPage = new TermView();
         }
 
         protected override void OnStart ()

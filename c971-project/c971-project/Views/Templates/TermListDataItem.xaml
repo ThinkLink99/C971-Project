@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="c971_project.Views.Templates.TermListDataItem">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0"
+               Grid.Column="0"
+               Grid.ColumnSpan="3"
+               Text="Term Title"
+               FontSize="18"
+               TextColor="Black"/>
+
+        <DatePicker Grid.Row="1"
+                    Grid.Column="0"
+                    Date="02/16/23"
+                    TextColor="Black"/>
+        <Label Grid.Row="1"
+               Grid.Column="1"
+               Text="-"
+               TextColor="Black"/>
+        <DatePicker Grid.Row="1"
+                    Grid.Column="0"
+                    Date="02/16/23"
+                    TextColor="Black"/>
+    </Grid>
+</ViewCell>

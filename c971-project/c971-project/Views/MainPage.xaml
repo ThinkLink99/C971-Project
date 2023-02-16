@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:templates="clr-namespace:c971_project.Views.Templates"
              xmlns:viewmodels="clr-namespace:c971_project.ViewModels"
-             x:Class="c971_project.Views.TermView">
+             x:Class="c971_project.Views.MainPage">
     <!--<ContentPage.BindingContext>
         <viewmodels:TermViewModel />
     </ContentPage.BindingContext>-->
@@ -28,10 +28,10 @@
                 </ListView.ItemsSource>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <templates:CourseListDataItem />
+                        <templates:TermListDataItem />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
-  </ContentPage.Content>
+    </ContentPage.Content>
 </ContentPage>
