@@ -11,6 +11,9 @@ namespace c971_project
         public AppShell()
         {
             InitializeComponent();
+
+            Routing.RegisterRoute(nameof(TermView), typeof(TermView));
+            Routing.RegisterRoute(nameof(CourseView), typeof(CourseView));
         }
 
         private async void OnMenuItemClicked(object sender, EventArgs e)

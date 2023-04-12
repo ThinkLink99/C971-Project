@@ -1,8 +1,5 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using c971_project.Services;
-using c971_project.Views;
+﻿using Xamarin.Forms;
+using c971_project.Data;
 
 namespace c971_project
 {
@@ -13,10 +10,8 @@ namespace c971_project
         {
             InitializeComponent();
 
-            //DependencyService.Register<MockDataStore>();
+            DependencyService.Register<IDataContext, MockContext>();
             MainPage = new AppShell();
-            //MainPage = new NavigationPage(new TermView());
-            //MainPage = new TermView();
         }
 
         protected override void OnStart ()

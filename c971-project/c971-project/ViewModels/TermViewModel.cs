@@ -1,23 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Text;
+using System.Drawing;
+using c971_project.Data;
 using c971_project.Models;
+using Xamarin.Forms;
 
 namespace c971_project.ViewModels
 {
-    public class TermViewModel : INotifyPropertyChanged
+    [QueryProperty(nameof(TermId), nameof(TermId))]
+    public class TermViewModel : ViewModelBase
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        private int _termId;
+        private Term _term;
 
-        private Term _termDetails;
         private ObservableCollection<Course> _courses;
 
-        public Term TermDetails
+        public string TermId 
+        { 
+            get => _termId.ToString();
+            set
+            {
+                _termId = int.Parse(Uri.UnescapeDataString(value ?? "0"));
+                GetTermDetails();
+                GetCourses();
+                OnPropertyChanged(nameof (TermId));
+            }
+        }
+        public Term Term
         {
-            get => _termDetails;
-            set => _termDetails = value;
+            get => _term;
+            set
+            {
+                _term = value;
+                OnPropertyChanged(nameof (Term));
+            }
         }
         public ObservableCollection<Course> Courses
         {
@@ -25,26 +42,41 @@ namespace c971_project.ViewModels
             set
             {
                 _courses = value;
+                OnPropertyChanged(nameof(Courses));
             }
         }
 
-        public void OpenCourse(Course courseToOpen)
-        {
 
-        }
-        public void GetTermStatus()
+        public TermViewModel() : base()
         {
-
         }
 
-        public void PopulateTestData()
+        public async void GetTermDetails()
         {
-            if (Courses == null) Courses = new ObservableCollection<Course>();
+            Term = await _ctx.GetTerm(_termId);
+        }
+        public async void GetCourses()
+        {
+            if (Courses == null)
+            {
+                Courses = new ObservableCollection<Course>();
+            }
 
-            Courses.Add(new Course());
-            Courses.Add(new Course());
-            Courses.Add(new Course());
-            Courses.Add(new Course());
+            var courses = await _ctx.GetCoursesInTerm(_termId);
+            foreach (var course in courses)
+            {
+                Courses.Add(course);
+            }
+        }
+
+        internal void UpdateStartDate(DateTime date)
+        {
+            _ctx.UpdateTerm(null);
+        }
+
+        internal void UpdateEndDate(DateTime date)
+        {
+            _ctx.UpdateTerm(null);
         }
     }
 }

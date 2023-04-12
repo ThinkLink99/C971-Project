@@ -4,31 +4,20 @@
              xmlns:templates="clr-namespace:c971_project.Views.Templates"
              xmlns:viewmodels="clr-namespace:c971_project.ViewModels"
              x:Class="c971_project.Views.MainPage">
-    <!--<ContentPage.BindingContext>
-        <viewmodels:TermViewModel />
-    </ContentPage.BindingContext>-->
+    <ContentPage.BindingContext>
+        <viewmodels:MainPageViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Courses"
+            <Label Text="Terms"
                    FontSize="24"
                    TextColor="Black" />
-            <ListView SelectionMode="None">
-                <ListView.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>mono</x:String>
-                        <x:String>monodroid</x:String>
-                        <x:String>monotouch</x:String>
-                        <x:String>monorail</x:String>
-                        <x:String>monodevelop</x:String>
-                        <x:String>monotone</x:String>
-                        <x:String>monopoly</x:String>
-                        <x:String>monomodal</x:String>
-                        <x:String>mononucleosis</x:String>
-                    </x:Array>
-                </ListView.ItemsSource>
+            <ListView SelectionMode="None" ItemsSource="{Binding Terms}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <templates:TermListDataItem />
+                        <templates:TermListDataItem TermName="{Binding TermName}"
+                                                    TermStart="{Binding TermStartShortDate}"
+                                                    TermEnd="{Binding TermEndShortDate}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

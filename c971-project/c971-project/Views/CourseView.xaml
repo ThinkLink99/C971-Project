@@ -2,7 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:templates="clr-namespace:c971_project.Views.Templates"
+             xmlns:viewmodels="clr-namespace:c971_project.ViewModels"
              x:Class="c971_project.Views.CourseView">
+    <ContentPage.BindingContext>
+        <viewmodels:CourseViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Course Name"
@@ -41,6 +45,9 @@
                        Grid.Column="0"
                        TextColor="Black"/>
             </Grid>
+
+            <DatePicker x:Name="dtStartDate" Date="{Binding }"/>
+
             <Label Text="Notes"
                    FontSize="20"
                    TextColor="Black"/>
@@ -57,7 +64,7 @@
                 </ListView.ItemsSource>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <templates:CourseListDataItem />
+                        <templates:AssessmentListDataItem />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

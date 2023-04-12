@@ -4,28 +4,24 @@
              xmlns:templates="clr-namespace:c971_project.Views.Templates"
              xmlns:viewmodels="clr-namespace:c971_project.ViewModels"
              x:Class="c971_project.Views.TermView">
-    <!--<ContentPage.BindingContext>
+    <ContentPage.BindingContext>
         <viewmodels:TermViewModel />
-    </ContentPage.BindingContext>-->
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
+            <Label Text="Start Date:"
+                   FontSize="24"
+                   TextColor="Black" />
+            <DatePicker x:Name="dtStartDate" Date="{Binding Term.StartDate}" PropertyChanged="dtStartDate_PropertyChanged" Focused="dtStartDate_Focused" Unfocused="dtStartDate_Unfocused" />
+            <Label Text="End Date:"
+                   FontSize="24"
+                   TextColor="Black" />
+            <DatePicker x:Name="dtEndDate" Date="{Binding Term.AnticipatedEndDate}" PropertyChanged="dtEndDate_PropertyChanged" Focused="dtEndDate_Focused" Unfocused="dtEndDate_Unfocused" />
+
             <Label Text="Courses"
                    FontSize="24"
                    TextColor="Black" />
-            <ListView SelectionMode="None">
-                <ListView.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>mono</x:String>
-                        <x:String>monodroid</x:String>
-                        <x:String>monotouch</x:String>
-                        <x:String>monorail</x:String>
-                        <x:String>monodevelop</x:String>
-                        <x:String>monotone</x:String>
-                        <x:String>monopoly</x:String>
-                        <x:String>monomodal</x:String>
-                        <x:String>mononucleosis</x:String>
-                    </x:Array>
-                </ListView.ItemsSource>
+            <ListView SelectionMode="None" ItemsSource="{Binding Courses}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <templates:CourseListDataItem />

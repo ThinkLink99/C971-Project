@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <RootNamespace>$(MSBuildProjectName.Replace("-", "_"))</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>  
@@ -13,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Templates\AssessmentListDataItem.xaml.cs">
+      <DependentUpon>AssessmentListDataItem.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Templates\CourseListDataItem.xaml.cs">
       <DependentUpon>CourseListDataItem.xaml</DependentUpon>
     </Compile>
