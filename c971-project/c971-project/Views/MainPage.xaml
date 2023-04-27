@@ -12,7 +12,9 @@
             <Label Text="Terms"
                    FontSize="24"
                    TextColor="Black" />
-            <ListView SelectionMode="None" ItemsSource="{Binding Terms}">
+            <ListView SelectionMode="None"
+                      ItemsSource="{Binding Terms}"
+                      ItemTapped="ListView_ItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <templates:TermListDataItem TermName="{Binding TermName}"

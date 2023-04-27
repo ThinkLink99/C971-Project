@@ -1,11 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:c971_project.ViewModels.Templates"
              x:Class="c971_project.Views.Templates.AssessmentListDataItem">
+    <ViewCell.BindingContext>
+        <viewmodels:AssessmentListDataItemViewModel/>
+    </ViewCell.BindingContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -16,21 +22,30 @@
         <Label Grid.Row="0"
                Grid.Column="0"
                Grid.ColumnSpan="3"
-               Text="Course Title"
+               Text="{Binding Assessment.AssessmentTitle}"
                FontSize="18"
                TextColor="Black"/>
 
-        <DatePicker Grid.Row="1"
+        <DatePicker x:Name="dtStartDate" 
+                    Grid.Row="1"
                     Grid.Column="0"
-                    Date="2/16/23"
-                    TextColor="Black"/>
-        <Label Grid.Row="1"
-               Grid.Column="1"
-               Text="Assignment Status"
-               TextColor="Black"/>
-        <Button Grid.Row="1"
-                Grid.Column="2"
-                Text="View Course"
-                TextColor="Black"/>
+                    Date="{Binding Assessment.StartDate}"
+                    TextColor="Black"
+                    PropertyChanged="dtStartDate_PropertyChanged"
+                    Focused="dtStartDate_Focused"
+                    Unfocused="dtStartDate_Unfocused"/>
+        
+        <DatePicker x:Name="dtEndDate" 
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Date="{Binding Assessment.AnticipatedEndDate}"
+                    TextColor="Black"
+                    PropertyChanged="dtEndDate_PropertyChanged"
+                    Focused="dtEndDate_Focused"
+                    Unfocused="dtEndDate_Unfocused"/>
+
+        <Label Text="{Binding AssessmentStatus}"
+               Grid.Row="2"
+               Grid.Column="0"/>
     </Grid>
 </ViewCell>

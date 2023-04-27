@@ -3,17 +3,67 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:templates="clr-namespace:c971_project.Views.Templates"
              xmlns:viewmodels="clr-namespace:c971_project.ViewModels"
+             xmlns:converters="clr-namespace:c971_project.Converters"
              x:Class="c971_project.Views.CourseView">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Code Sourced from blog post:
+                 https://alexdunn.org/2017/05/16/xamarin-tip-binding-a-picker-to-an-enum/ -->
+            <converters:IntEnumConverter x:Key="IntEnum" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.BindingContext>
         <viewmodels:CourseViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Course Name"
+            <Label Text="{Binding Course.CourseName}"
                    FontSize="24"
                    TextColor="Black"/>
+
+            <Label Text="Course Status:"
+                   FontSize="18"
+                   TextColor="Black"/>
+            <Picker ItemsSource="{Binding Statuses}"
+                    SelectedIndex="{Binding CourseStatus, Converter=IntEnum}">
+            </Picker>
+            
+            <Grid x:Name="grdDates">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackLayout Grid.Row="0"
+                             Grid.Column="0">
+                    <Label Text="Start Date:"
+                       TextColor="Black"/>
+                    <DatePicker x:Name="dtStartDate"
+                                Date="{Binding Course.CourseStart}"
+                                PropertyChanged="dtStartDate_PropertyChanged"
+                                Focused="dtStartDate_Focused"
+                                Unfocused="dtStartDate_Unfocused"/>
+                </StackLayout>
+                <StackLayout Grid.Row="0"
+                             Grid.Column="1">
+                    <Label Text="End Date:"
+                       TextColor="Black"/>
+                    <DatePicker x:Name="dtEndDate"
+                                Date="{Binding Course.CourseEnd}"
+                                PropertyChanged="dtEndDate_PropertyChanged"
+                                Focused="dtEndDate_Focused"
+                                Unfocused="dtEndDate_Unfocused"/>
+                </StackLayout>
+            </Grid>
+
             <Grid x:Name="grdInstructor">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -32,36 +82,42 @@
                        Grid.ColumnSpan="4"
                        FontSize="18"
                        TextColor="Black"/>
-                <Label Text="Name:"
-                       Grid.Row="1"
-                       Grid.Column="0"
+                <StackLayout Grid.Row="1"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="4">
+                    <Label Text="Name:"
                        TextColor="Black"/>
-                <Label Text="Phone:"
-                       Grid.Row="1"
-                       Grid.Column="2"
+                    <Entry Placeholder="Enter Instructor Name: "
+                           Text="{Binding Course.InstructorName}" />
+                </StackLayout>
+                <StackLayout Grid.Row="2"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="4">
+                    <Label Text="Phone:"
                        TextColor="Black"/>
-                <Label Text="Email:"
-                       Grid.Row="2"
-                       Grid.Column="0"
+                    <Entry Placeholder="Enter Instructor Phone: "
+                           Text="{Binding Course.InstructorPhone}" />
+                </StackLayout>
+                <StackLayout Grid.Row="3"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="4">
+                    <Label Text="Email:"
                        TextColor="Black"/>
+                    <Entry Placeholder="Enter Instructor Email: "
+                           Text="{Binding Course.InstructorEmail}" />
+                </StackLayout>
             </Grid>
-
-            <DatePicker x:Name="dtStartDate" Date="{Binding }"/>
 
             <Label Text="Notes"
                    FontSize="20"
                    TextColor="Black"/>
+            <Editor Text="{Binding Course.CourseNotes}" TextChanged="Editor_TextChanged"/>
+
             <Label Text="Assesments"
                    FontSize="20"
                    TextColor="Black"/>
 
-            <ListView SelectionMode="None">
-                <ListView.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>mono</x:String>
-                        <x:String>monodroid</x:String>
-                    </x:Array>
-                </ListView.ItemsSource>
+            <ListView SelectionMode="None" ItemsSource="{Binding Assessments}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <templates:AssessmentListDataItem />

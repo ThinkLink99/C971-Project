@@ -9,6 +9,9 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
+            <Label Text="{Binding Term.Title}"
+                   FontSize="24"
+                   TextColor="Black" />
             <Label Text="Start Date:"
                    FontSize="24"
                    TextColor="Black" />

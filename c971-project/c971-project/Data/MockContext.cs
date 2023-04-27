@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace c971_project.Data
 {
@@ -21,23 +22,31 @@ namespace c971_project.Data
         {
              var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "MyData.db");
             _database = new SQLiteAsyncConnection(databasePath);
+            try
+            {
+                courseProvider = new CourseProvider(_database);
+                termProvider = new TermProvider(_database);
+                assessmentProvider = new AssessmentProvider(_database);
 
-            courseProvider = new CourseProvider(_database);
-            termProvider = new TermProvider(_database);
-            assessmentProvider = new AssessmentProvider(_database);
+                _database.CreateTableAsync<Term>().Wait();
+                _database.CreateTableAsync<Course>().Wait();
+                _database.CreateTableAsync<Assessment>().Wait();
 
+                _database.ExecuteAsync("delete from Term").Wait();
+                _database.ExecuteAsync("delete from Course").Wait();
+                _database.ExecuteAsync("delete from Assessment").Wait();
 
-            _database.CreateTableAsync<Term>().Wait();
-            _database.CreateTableAsync<Course>().Wait();
-            _database.CreateTableAsync<Assessment>().Wait();
+                InsertTerm(new Term { TermId = 1, TermName = "Term 1", TermStart = System.DateTime.Today, TermEnd = System.DateTime.Today.AddMonths(6) }).Wait();
 
-            InsertTerm(new Term { TermName = "Term 1", TermStart = System.DateTime.Today, TermEnd = System.DateTime.Today.AddMonths(6) });
+                InsertCourse(new Course { CourseId = 1, TermId = 1, CourseName = "C971" }).Wait();
 
-            InsertCourse(new Course { TermId = 1 });
-
-
-            InsertAssessment(new Assessment { CourseId = 1, AssessmentTitle = "Performance Assessment" });
-            InsertAssessment(new Assessment { CourseId = 1, AssessmentTitle = "Objective Assessment" });
+                InsertAssessment(new Assessment { CourseId = 1, AssessmentTitle = "Performance Assessment" }).Wait();
+                InsertAssessment(new Assessment { CourseId = 1, AssessmentTitle = "Objective Assessment" }).Wait();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.InnerException);
+            }
         }
 
         public async Task<List<Course>> GetCoursesInTerm(int termId)
@@ -83,7 +92,5 @@ namespace c971_project.Data
         {
             await _database.UpdateAsync(assessment);
         }
-
-        
     }
 }

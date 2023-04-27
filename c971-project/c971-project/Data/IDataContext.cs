@@ -19,5 +19,7 @@ namespace c971_project.Data
         Task InsertAssessment(Assessment assessment);
         Task UpdateAssessment(Assessment assessment);
         Task<List<Assessment>> GetAssessmentsInCourse(int courseId);
+        Task<Course> GetCourse(int termId, int courseId);
+        void UpdateTerm(Assessment assessment);
     }
 }

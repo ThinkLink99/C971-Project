@@ -43,7 +43,6 @@ namespace c971_project.Views
         {
             _dtEndSelected = true;
         }
-
         private void dtStartDate_Focused(object sender, FocusEventArgs e)
         {
             _dtStartSelected = true;
@@ -53,7 +52,6 @@ namespace c971_project.Views
         {
             _dtStartSelected = false;
         }
-
         private void dtEndDate_Unfocused(object sender, FocusEventArgs e)
         {
             _dtEndSelected = false;

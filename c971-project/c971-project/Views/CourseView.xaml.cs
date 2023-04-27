@@ -1,4 +1,5 @@
-﻿using System;
+﻿using c971_project.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,53 @@ namespace c971_project.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CourseView : ContentPage
     {
+        bool _dtEndSelected = false;
+        bool _dtStartSelected = false;
+
+        private CourseViewModel _viewModel;
+
         public CourseView()
         {
             InitializeComponent();
+            _viewModel = (CourseViewModel)BindingContext;
+        }
+
+        private void dtStartDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == DatePicker.DateProperty.PropertyName && _dtStartSelected)
+            {
+                _viewModel.UpdateStartDate(dtStartDate.Date);
+            }
+        }
+        private void dtEndDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == TimePicker.TimeProperty.PropertyName && _dtEndSelected)
+            {
+                _viewModel.UpdateEndDate(dtEndDate.Date);
+            }
+        }
+
+        private void dtEndDate_Focused(object sender, FocusEventArgs e)
+        {
+            _dtEndSelected = true;
+        }
+        private void dtStartDate_Focused(object sender, FocusEventArgs e)
+        {
+            _dtStartSelected = true;
+        }
+
+        private void dtStartDate_Unfocused(object sender, FocusEventArgs e)
+        {
+            _dtStartSelected = false;
+        }
+        private void dtEndDate_Unfocused(object sender, FocusEventArgs e)
+        {
+            _dtEndSelected = false;
+        }
+
+        private void Editor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _viewModel.UpdateNotes(e.NewTextValue);
         }
     }
 }

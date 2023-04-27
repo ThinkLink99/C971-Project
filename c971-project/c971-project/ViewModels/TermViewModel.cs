@@ -13,7 +13,6 @@ namespace c971_project.ViewModels
     {
         private int _termId;
         private Term _term;
-
         private ObservableCollection<Course> _courses;
 
         public string TermId 
@@ -46,7 +45,6 @@ namespace c971_project.ViewModels
             }
         }
 
-
         public TermViewModel() : base()
         {
         }
@@ -69,14 +67,15 @@ namespace c971_project.ViewModels
             }
         }
 
-        internal void UpdateStartDate(DateTime date)
+        public void UpdateStartDate(DateTime date)
         {
-            _ctx.UpdateTerm(null);
+            Term.StartDate = date;
+            _ctx.UpdateTerm(Term);
         }
-
-        internal void UpdateEndDate(DateTime date)
+        public void UpdateEndDate(DateTime date)
         {
-            _ctx.UpdateTerm(null);
+            Term.AnticipatedEndDate = date;
+            _ctx.UpdateTerm(Term);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using c971_project.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,13 @@ namespace c971_project.Views
 		{
 			InitializeComponent ();
 		}
-	}
+
+        private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+			Term tapped = e.Item as Term;
+
+            string uri = $"{nameof(TermView)}?TermId={tapped.TermId}";
+            await Shell.Current.GoToAsync(uri);
+        }
+    }
 }

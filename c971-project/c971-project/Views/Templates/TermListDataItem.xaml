@@ -23,7 +23,8 @@
                Grid.ColumnSpan="3"
                Text="{Binding TermName }"
                FontSize="18"
-               TextColor="Black"/>
+               TextColor="Black"
+               HorizontalTextAlignment="Start"/>
 
         <Button Grid.Row="2"
                 Grid.Column="1"

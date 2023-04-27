@@ -7,7 +7,7 @@ namespace c971_project.Models
 {
     public class Term : BaseViewModel
     {
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey]
         public int TermId { get; set; }
         public string TermName { get; set; } = "Default";
         public DateTime TermStart { get; set; }
