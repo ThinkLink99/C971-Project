@@ -7,7 +7,7 @@ namespace c971_project.Data
     public interface IDataContext
     {
         Task<Term> GetTerm(int termId);
-        Task<List<Term>> GetTerms();
+        Task<Term[]> GetTerms();
         Task<List<Course>> GetCoursesInTerm(int termId);
 
         Task InsertTerm(Term term);
@@ -20,6 +20,8 @@ namespace c971_project.Data
         Task UpdateAssessment(Assessment assessment);
         Task<List<Assessment>> GetAssessmentsInCourse(int courseId);
         Task<Course> GetCourse(int termId, int courseId);
-        void UpdateTerm(Assessment assessment);
+        Task DeleteTerm(Term term);
+        Task DeleteCourse(Course course);
+        Task DeleteAssessment(Assessment assessment);
     }
 }

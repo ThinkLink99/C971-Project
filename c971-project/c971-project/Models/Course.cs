@@ -14,17 +14,27 @@ namespace c971_project.Models
     }
     public class Course
     {
-        [Indexed(Name = "CompositeKey", Order = 1, Unique = true)]
-        public int CourseId { get; set; }
-        [Indexed(Name = "CompositeKey", Order = 2, Unique = true)]
-        public int TermId { get; set; }
-        public string CourseName { get; set; }
-        public string CourseNotes { get; set; }
-        public CourseStatus Status { get; set; }
-        public string InstructorName { get; set; }
-        public string InstructorPhone { get; set; }
-        public string InstructorEmail { get; set; }
-        public DateTime CourseStart { get; set; }
-        public DateTime CourseEnd { get; set; }
+        private int courseId;
+        private int termId;
+        private string courseName;
+        private string courseNotes;
+        private CourseStatus status;
+        private string instructorName;
+        private string instructorPhone;
+        private string instructorEmail;
+        private DateTime courseStart;
+        private DateTime courseEnd;
+
+        [PrimaryKey]
+        public int CourseId { get => courseId; set => courseId = value; }
+        public int TermId { get => termId; set => termId = value; }
+        public string CourseName { get => courseName; set => courseName = value; }
+        public string CourseNotes { get => courseNotes; set => courseNotes = value; }
+        public CourseStatus Status { get => status; set => status = value; }
+        public string InstructorName { get => instructorName; set => instructorName = value; }
+        public string InstructorPhone { get => instructorPhone; set => instructorPhone = value; }
+        public string InstructorEmail { get => instructorEmail; set => instructorEmail = value; }
+        public DateTime CourseStart { get => courseStart; set => courseStart = value; }
+        public DateTime CourseEnd { get => courseEnd; set => courseEnd = value; }
     }
 }

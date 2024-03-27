@@ -11,7 +11,7 @@ namespace c971_project.ViewModels
 
         public ViewModelBase()
         {
-            _ctx = DependencyService.Get<IDataContext>();
+            //_ctx = DependencyService.Get<IDataContext>();
         }
 
         public void OnPropertyChanged(string PropertyName)

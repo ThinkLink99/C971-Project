@@ -1,6 +1,9 @@
-﻿using c971_project.ViewModels;
+﻿using c971_project.Models;
+using c971_project.ViewModels;
+using Plugin.LocalNotifications;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,26 +19,40 @@ namespace c971_project.Views
         bool _dtEndSelected = false;
         bool _dtStartSelected = false;
 
+        string _oldTitle = string.Empty;
+        DateTime _oldStart = DateTime.MinValue;
+        DateTime _oldEnd = DateTime.MinValue;
+        string _oldInstructorName = string.Empty;
+        string _oldInstructorEmail = string.Empty;
+        string _oldInstructorPhone = string.Empty;
+        string _oldCourseNotes = string.Empty;
+        CourseStatus _oldCourseStatus = CourseStatus.PlanToTake;
+
         private CourseViewModel _viewModel;
 
-        public CourseView()
+        public CourseView(int termId, int courseId)
         {
             InitializeComponent();
             _viewModel = (CourseViewModel)BindingContext;
+
+            _viewModel.TermId = termId.ToString();
+            _viewModel.CourseId = courseId.ToString();
+            _viewModel.GetCourseDetails();
+            _viewModel.GetAssessments();
         }
 
         private void dtStartDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == DatePicker.DateProperty.PropertyName && _dtStartSelected)
             {
-                _viewModel.UpdateStartDate(dtStartDate.Date);
+                _viewModel.Course.CourseStart = dtStartDate.Date;
             }
         }
         private void dtEndDate_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == TimePicker.TimeProperty.PropertyName && _dtEndSelected)
             {
-                _viewModel.UpdateEndDate(dtEndDate.Date);
+                _viewModel.Course.CourseEnd = dtEndDate.Date;
             }
         }
 
@@ -59,7 +76,68 @@ namespace c971_project.Views
 
         private void Editor_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _viewModel.UpdateNotes(e.NewTextValue);
+            _viewModel.Course.CourseNotes = e.NewTextValue;
+        }
+
+        private void StartEditMode_Clicked(object sender, EventArgs e)
+        {
+            _viewModel.EditMode = true;
+
+            _oldTitle = _viewModel.Course.CourseName;
+            _oldStart = _viewModel.Course.CourseStart;
+            _oldEnd = _viewModel.Course.CourseEnd;
+
+            _oldInstructorName = _viewModel.Course.InstructorName;
+            _oldInstructorEmail = _viewModel.Course.InstructorEmail;
+            _oldInstructorPhone = _viewModel.Course.InstructorPhone;
+
+            _oldCourseNotes = _viewModel.Course.CourseNotes;
+            _oldCourseStatus = _viewModel.Course.Status;
+        }
+        private void SaveChanges_Clicked(object sender, EventArgs e)
+        {
+            _viewModel.UpdateCourse();
+            _viewModel.EditMode = false;
+        }
+        private void Cancel_Clicked(object sender, EventArgs e)
+        {
+            _viewModel.Course.CourseName = _oldTitle;
+            _viewModel.Course.CourseStart = _oldStart;
+            _viewModel.Course.CourseEnd = _oldEnd;
+
+            _viewModel.Course.InstructorName = _oldInstructorName;
+            _viewModel.Course.InstructorEmail = _oldInstructorEmail;
+            _viewModel.Course.InstructorPhone = _oldInstructorPhone;
+
+            _viewModel.Course.CourseNotes = _oldCourseNotes;
+            _viewModel.Course.Status = _oldCourseStatus;
+
+            _viewModel.EditMode = false;
+        }
+        private async void Button_Clicked(object sender, EventArgs e)
+        {
+            //int lastId = _viewModel.Terms.Last().TermId;
+            await _viewModel.DeleteCourse();
+            await Navigation.PopAsync();
+        }
+
+        private void btnSetReminder_Clicked(object sender, EventArgs e)
+        {
+            CrossLocalNotifications.Current.Show("Assessment Reminder", $"");
+        }
+
+        private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            Assessment tapped = e.Item as Assessment;
+            try
+            {
+                await Navigation.PushAsync(new AssessmentView(tapped.AssessmentId, tapped.CourseId), true);
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
     }
 }

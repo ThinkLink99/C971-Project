@@ -14,11 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Templates\AssessmentListDataItem.xaml.cs">
-      <DependentUpon>AssessmentListDataItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Templates\CourseListDataItem.xaml.cs">
-      <DependentUpon>CourseListDataItem.xaml</DependentUpon>
+    <Compile Update="Views\AssessmentView.xaml.cs">
+      <DependentUpon>AssessmentView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -26,10 +23,7 @@
     <EmbeddedResource Update="Views\MainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Templates\InstructorInfoTemplate.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\Templates\TermListDataItem.xaml">
+    <EmbeddedResource Update="Views\NotificationInputDialog.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

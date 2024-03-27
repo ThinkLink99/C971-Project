@@ -1,5 +1,6 @@
 ﻿using Xamarin.Forms;
 using c971_project.Data;
+using c971_project.Views;
 
 namespace c971_project
 {
@@ -10,18 +11,16 @@ namespace c971_project
         {
             InitializeComponent();
 
-            DependencyService.Register<IDataContext, MockContext>();
-            MainPage = new AppShell();
+            MockContext.InitializeSingleton();
+            MainPage = new NavigationPage(new MainPage());
         }
 
         protected override void OnStart ()
         {
         }
-
         protected override void OnSleep ()
         {
         }
-
         protected override void OnResume ()
         {
         }

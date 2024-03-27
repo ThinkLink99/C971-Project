@@ -5,12 +5,12 @@ using System.Text;
 
 namespace c971_project.Models
 {
-    public class Term : BaseViewModel
+    public class Term
     {
         [PrimaryKey]
         public int TermId { get; set; }
-        public string TermName { get; set; } = "Default";
-        public DateTime TermStart { get; set; }
-        public DateTime TermEnd { get; set; }
+        public string Title { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime AnticipatedEndDate { get; set; }
     }
 }

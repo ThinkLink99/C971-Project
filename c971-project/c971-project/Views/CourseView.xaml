@@ -1,13 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:templates="clr-namespace:c971_project.Views.Templates"
              xmlns:viewmodels="clr-namespace:c971_project.ViewModels"
              xmlns:converters="clr-namespace:c971_project.Converters"
              x:Class="c971_project.Views.CourseView">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <!-- Code Sourced from blog post:
+            <!-- Code Sourced from blog post:gic 
                  https://alexdunn.org/2017/05/16/xamarin-tip-binding-a-picker-to-an-enum/ -->
             <converters:IntEnumConverter x:Key="IntEnum" />
         </ResourceDictionary>
@@ -17,15 +16,59 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
+            <Button Text="Delete Course" Clicked="Button_Clicked" IsVisible="{Binding EditMode}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Row="1"
+                        Grid.Column="3"
+                        Grid.ColumnSpan="1"
+                        IsVisible="{Binding NotEditMode}"
+                        Clicked="StartEditMode_Clicked"
+                        Text="Edit"/>
+                <Button Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="1"
+                        IsVisible="{Binding EditMode}"
+                        BackgroundColor="Green"
+                        Clicked="SaveChanges_Clicked"
+                        Text="Save Changes"/>
+                <Button Grid.Row="1"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="1"
+                        IsVisible="{Binding EditMode}"
+                        Clicked="Cancel_Clicked"
+                        BackgroundColor="Red"
+                        Text="Cancel"/>
+            </Grid>
+            
             <Label Text="{Binding Course.CourseName}"
+                   IsVisible="{Binding NotEditMode}"
                    FontSize="24"
                    TextColor="Black"/>
+            <Entry x:Name="txtTitle" 
+                   FontSize="24"
+                   Text="{Binding Course.CourseName}"
+                   IsVisible="{Binding EditMode}"
+                   TextColor="Black" />
 
             <Label Text="Course Status:"
                    FontSize="18"
                    TextColor="Black"/>
             <Picker ItemsSource="{Binding Statuses}"
-                    SelectedIndex="{Binding CourseStatus, Converter=IntEnum}">
+                    SelectedIndex="{Binding Source=CourseStatus, Converter={StaticResource IntEnum}}"
+                    IsEnabled="{Binding EditMode}">
             </Picker>
             
             <Grid x:Name="grdDates">
@@ -44,6 +87,7 @@
                     <Label Text="Start Date:"
                        TextColor="Black"/>
                     <DatePicker x:Name="dtStartDate"
+                                IsEnabled="{Binding EditMode}"
                                 Date="{Binding Course.CourseStart}"
                                 PropertyChanged="dtStartDate_PropertyChanged"
                                 Focused="dtStartDate_Focused"
@@ -54,6 +98,7 @@
                     <Label Text="End Date:"
                        TextColor="Black"/>
                     <DatePicker x:Name="dtEndDate"
+                                IsEnabled="{Binding EditMode}"
                                 Date="{Binding Course.CourseEnd}"
                                 PropertyChanged="dtEndDate_PropertyChanged"
                                 Focused="dtEndDate_Focused"
@@ -111,16 +156,51 @@
             <Label Text="Notes"
                    FontSize="20"
                    TextColor="Black"/>
-            <Editor Text="{Binding Course.CourseNotes}" TextChanged="Editor_TextChanged"/>
+            <Editor Text="{Binding Course.CourseNotes}" 
+                    IsEnabled="{Binding EditMode}"
+                    TextChanged="Editor_TextChanged"/>
 
             <Label Text="Assesments"
                    FontSize="20"
                    TextColor="Black"/>
 
-            <ListView SelectionMode="None" ItemsSource="{Binding Assessments}">
+            <ListView SelectionMode="None"
+                      ItemTapped="ListView_ItemTapped"
+                      ItemsSource="{Binding Assessments}" 
+                      HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <templates:AssessmentListDataItem />
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding AssessmentTitle}"
+                                       FontSize="20"
+                                       TextColor="Black"
+                                       HorizontalTextAlignment="Start"/>
+
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                                    <Label Text="Start: "
+                                            FontSize="16"
+                                            TextColor="Black"/>
+                                    <Label Text="{Binding StartDate, StringFormat='{0:MM/dd/yyyy}'}"
+                                            FontSize="16"
+                                            TextColor="Black"/>
+                                    <Label Text="End: "
+                                            FontSize="16"
+                                            TextColor="Black"/>
+                                    <Label Text="{Binding AnticipatedEndDate, StringFormat='{0:MM/dd/yyyy}'}"
+                                            FontSize="16"
+                                            TextColor="Black"
+                                            HorizontalOptions="End"/>
+                                    <Label Text="{Binding Status}" />
+                                    <Button x:Name="btnSetReminder"
+                                        Text="Set Reminder" 
+                                        Clicked="btnSetReminder_Clicked" />
+                                    <Button Text="Delete Assessment" 
+                                        Clicked="Button_Clicked"
+                                        IsVisible="{Binding EditMode}" />
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

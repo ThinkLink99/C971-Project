@@ -1,7 +1,10 @@
 ﻿using c971_project.Data;
 using c971_project.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace c971_project.ViewModels
@@ -10,9 +13,9 @@ namespace c971_project.ViewModels
     {
         private ObservableCollection<Term> _terms;
 
-        public ObservableCollection<Term> Terms 
-        { 
-            get => _terms; 
+        public ObservableCollection<Term> Terms
+        {
+            get => _terms;
             set
             {
                 _terms = value;
@@ -22,20 +25,29 @@ namespace c971_project.ViewModels
 
         public MainPageViewModel() : base()
         {
-            GetTerms();
         }
 
-        public async void GetTerms ()
+        public async Task GetTerms ()
         {
+            Debug.Write("Getting Terms");
             if (Terms == null)
             {
                 Terms = new ObservableCollection<Term>();
             }
+            
+            Terms.Clear();
+            var terms =  await MockContext.Instance.GetTerms();
+            Debug.Write("Rebuilding Terms");
 
-            var terms = await _ctx.GetTerms();
-            foreach (var term in terms) {
+            foreach (var term in terms)
+            {
                 Terms.Add(term);
             }
+        }
+
+        public async Task AddNewTerm(Term term)
+        {
+            await MockContext.Instance.InsertTerm(term);
         }
     }
 }

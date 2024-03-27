@@ -1,36 +1,113 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:templates="clr-namespace:c971_project.Views.Templates"
              xmlns:viewmodels="clr-namespace:c971_project.ViewModels"
              x:Class="c971_project.Views.TermView">
     <ContentPage.BindingContext>
         <viewmodels:TermViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Padding="10">
+            <Button Text="Delete Term" Clicked="Button_Clicked" IsVisible="{Binding EditMode}" />
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="1"
+                        IsVisible="{Binding NotEditMode}"
+                        Clicked="StartEditMode_Clicked"
+                        Text="Edit"/>
+                <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1"
+                        IsVisible="{Binding EditMode}"
+                        BackgroundColor="Green"
+                        Clicked="SaveChanges_Clicked"
+                        Text="Save Changes"/>
+                <Button Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="1"
+                        IsVisible="{Binding EditMode}"
+                        Clicked="Cancel_Clicked"
+                        BackgroundColor="Red"
+                        Text="Cancel"/>
+            </Grid>
+
             <Label Text="{Binding Term.Title}"
+                   IsVisible="{Binding NotEditMode}"
                    FontSize="24"
                    TextColor="Black" />
+
+            <Entry x:Name="txtTitle"
+                   FontSize="24"
+                   Text="{Binding Term.Title}"
+                   IsVisible="{Binding EditMode}"
+                   TextColor="Black" />
+
             <Label Text="Start Date:"
                    FontSize="24"
                    TextColor="Black" />
-            <DatePicker x:Name="dtStartDate" Date="{Binding Term.StartDate}" PropertyChanged="dtStartDate_PropertyChanged" Focused="dtStartDate_Focused" Unfocused="dtStartDate_Unfocused" />
-            <Label Text="End Date:"
+            <DatePicker x:Name="dtStartDate"
+                        Date="{Binding Term.StartDate}"
+                        IsEnabled="{Binding EditMode}"
+                        PropertyChanged="dtStartDate_PropertyChanged"
+                        Focused="dtStartDate_Focused"
+                        Unfocused="dtStartDate_Unfocused" />
+
+            <Label Text="Anticipated End Date:"
                    FontSize="24"
                    TextColor="Black" />
-            <DatePicker x:Name="dtEndDate" Date="{Binding Term.AnticipatedEndDate}" PropertyChanged="dtEndDate_PropertyChanged" Focused="dtEndDate_Focused" Unfocused="dtEndDate_Unfocused" />
+            <DatePicker x:Name="dtEndDate"
+                        Date="{Binding Term.AnticipatedEndDate}"
+                        IsEnabled="{Binding EditMode}"
+                        PropertyChanged="dtEndDate_PropertyChanged"
+                        Focused="dtEndDate_Focused"
+                        Unfocused="dtEndDate_Unfocused" />
 
             <Label Text="Courses"
                    FontSize="24"
                    TextColor="Black" />
-            <ListView SelectionMode="None" ItemsSource="{Binding Courses}">
+            <Button Text="Add Course" Clicked="ButtonAddCourse_Clicked" IsVisible="{Binding EditMode}" />
+
+            <ListView SelectionMode="None"
+                      ItemsSource="{Binding Courses}"
+                      ItemTapped="ListView_ItemTapped"
+                      HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <templates:CourseListDataItem />
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding CourseName}"
+                                       FontSize="20"
+                                       TextColor="Black"
+                                       HorizontalTextAlignment="Start"/>
+
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                                    <Label Text="Start: "
+                                            FontSize="16"
+                                            TextColor="Black"/>
+                                    <Label Text="{Binding CourseStart, StringFormat='{0:MM/dd/yyyy}'}"
+                                            FontSize="16"
+                                            TextColor="Black"/>
+                                    <Label Text="  End: "
+                                            FontSize="16"
+                                            TextColor="Black"/>
+                                    <Label Text="{Binding CourseEnd, StringFormat='{0:MM/dd/yyyy}'}"
+                                            FontSize="16"
+                                            TextColor="Black"
+                                            HorizontalOptions="End"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
-  </ContentPage.Content>
+    </ContentPage.Content>
 </ContentPage>

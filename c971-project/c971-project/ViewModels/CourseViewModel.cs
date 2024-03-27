@@ -13,12 +13,22 @@ namespace c971_project.ViewModels
     [QueryProperty(nameof(TermId), nameof(TermId))]
     public class CourseViewModel : ViewModelBase
     {
-        public IDataContext _ctx;
         private Course _course;
-        private int _termId;
-        private int _courseId;
+        private int _termId = -1;
+        private int _courseId = -1;
 
-        public ObservableCollection<Assessment> Assessments { get; private set; }
+        private bool _editMode;
+        private ObservableCollection<Assessment> _assessments;
+
+        public ObservableCollection<Assessment> Assessments 
+        {
+            get => _assessments;
+            set
+            {
+                _assessments = value;
+                OnPropertyChanged(nameof(Assessments));
+            }
+        }
         public CourseStatus CourseStatus
         {
             get
@@ -30,6 +40,22 @@ namespace c971_project.ViewModels
                 Course.Status = value;
             }
         }
+
+        public bool EditMode
+        {
+            get => _editMode;
+            set
+            {
+                _editMode = value;
+                OnPropertyChanged(nameof(EditMode));
+                OnPropertyChanged(nameof(NotEditMode));
+            }
+        }
+        public bool NotEditMode
+        {
+            get => !EditMode;
+        }
+        
         public List<string> Statuses
         {
             get
@@ -55,24 +81,22 @@ namespace c971_project.ViewModels
             set
             {
                 _courseId = int.Parse(Uri.UnescapeDataString(value ?? "0"));
-                GetCourseDetails();
-                GetAssessments();
                 OnPropertyChanged(nameof(CourseId));
             }
         }
 
         public async void GetCourseDetails()
         {
-            Course = await _ctx.GetCourse(_termId, _courseId);
+            Course = await MockContext.Instance.GetCourse(_termId, _courseId);
         }
-        private async void GetAssessments()
+        public async void GetAssessments()
         {
             if (Assessments == null)
             {
                 Assessments = new ObservableCollection<Assessment>();
             }
 
-            List<Assessment> assessments = await _ctx.GetAssessmentsInCourse(_courseId);
+            List<Assessment> assessments = await MockContext.Instance.GetAssessmentsInCourse(_courseId);
             foreach (var assessment in assessments)
             {
                 Assessments.Add(assessment);
@@ -91,24 +115,17 @@ namespace c971_project.ViewModels
 
         public CourseViewModel()
         {
-            _ctx = DependencyService.Get<IDataContext>();
+            //_ctx = DependencyService.Get<IDataContext>();
         }
 
-        public void UpdateStartDate(DateTime date)
+        public async void UpdateCourse()
         {
-            Course.CourseStart = date;
-            _ctx.UpdateCourse(Course);
-        }
-        public void UpdateEndDate(DateTime date)
-        {
-            Course.CourseEnd = date;
-            _ctx.UpdateCourse(Course);
+            await MockContext.Instance.UpdateCourse(Course);
         }
 
-        public void UpdateNotes (string notes)
+        public async Task DeleteCourse()
         {
-            Course.CourseNotes = notes;
-            _ctx.UpdateCourse(Course);
+           await MockContext.Instance.DeleteCourse(Course);
         }
     }
 }
